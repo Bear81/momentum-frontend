@@ -1,8 +1,17 @@
-import { Link, NavLink } from 'react-router-dom';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext.jsx';
 
 const linkStyle = { textDecoration: 'none' };
 
 export default function Navbar() {
+  const { isAuthenticated, user, logout } = useAuth();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    navigate('/login', { replace: true });
+  };
+
   return (
     <header style={{ borderBottom: '1px solid #eee' }}>
       <nav
@@ -20,19 +29,33 @@ export default function Navbar() {
           Momentum
         </Link>
 
-        <div style={{ display: 'flex', gap: '1rem' }}>
+        <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
           <NavLink to="/" end style={linkStyle}>
             Home
           </NavLink>
           <NavLink to="/dashboard" style={linkStyle}>
             Dashboard
           </NavLink>
-          <NavLink to="/login" style={linkStyle}>
-            Login
-          </NavLink>
-          <NavLink to="/register" style={linkStyle}>
-            Register
-          </NavLink>
+
+          {isAuthenticated ? (
+            <>
+              <span aria-live="polite" style={{ opacity: 0.8 }}>
+                {user?.username ? `Hi, ${user.username}` : 'Logged in'}
+              </span>
+              <button type="button" onClick={handleLogout}>
+                Logout
+              </button>
+            </>
+          ) : (
+            <>
+              <NavLink to="/login" style={linkStyle}>
+                Login
+              </NavLink>
+              <NavLink to="/register" style={linkStyle}>
+                Register
+              </NavLink>
+            </>
+          )}
         </div>
       </nav>
     </header>
