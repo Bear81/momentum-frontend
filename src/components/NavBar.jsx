@@ -1,45 +1,42 @@
-// components/NavBar.jsx
-import { NavLink } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
+// src/components/NavBar.jsx
+import { NavLink, useNavigate } from 'react-router-dom';
+import { Navbar, Nav, Container, Button } from 'react-bootstrap';
+import { useAuth } from '../context/AuthContext.jsx';
 
 export default function NavBar() {
-  const { user } = useAuth(); // null or {username, ...}
+  const { user, isAuthenticated, logout } = useAuth();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();            // clears localStorage + context
+    navigate('/login');  // redirect after logout
+  };
 
   return (
-    <nav className="navbar navbar-expand">
-      <div className="container">
-        <NavLink className="navbar-brand" to="/">
-          Momentum
-        </NavLink>
-        <ul className="navbar-nav ms-auto">
-          {!user && (
-            <>
-              <li className="nav-item">
-                <NavLink className="nav-link" to="/login">
-                  Login
-                </NavLink>
-              </li>
-              <li className="nav-item">
-                <NavLink className="nav-link" to="/register">
-                  Register
-                </NavLink>
-              </li>
-            </>
-          )}
-          {user && (
-            <>
-              <li className="nav-item">
-                <span className="nav-link disabled">Hi, {user.username}</span>
-              </li>
-              <li className="nav-item">
-                <NavLink className="nav-link" to="/logout">
+    <Navbar expand="md" bg="light" className="mb-3">
+      <Container>
+        <Navbar.Brand as={NavLink} to="/">Momentum</Navbar.Brand>
+        <Navbar.Toggle aria-controls="main-nav" />
+        <Navbar.Collapse id="main-nav">
+          <Nav className="ms-auto align-items-center">
+            {isAuthenticated ? (
+              <>
+                <span className="me-3 text-muted">
+                  Welcome{user?.username ? `, ${user.username}` : ''}
+                </span>
+                <Button variant="outline-secondary" size="sm" onClick={handleLogout}>
                   Logout
-                </NavLink>
-              </li>
-            </>
-          )}
-        </ul>
-      </div>
-    </nav>
+                </Button>
+              </>
+            ) : (
+              <>
+                <Nav.Link as={NavLink} to="/login">Login</Nav.Link>
+                <Nav.Link as={NavLink} to="/register">Register</Nav.Link>
+              </>
+            )}
+          </Nav>
+        </Navbar.Collapse>
+      </Container>
+    </Navbar>
   );
 }
