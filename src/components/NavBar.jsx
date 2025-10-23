@@ -1,63 +1,53 @@
-import { Link, NavLink, useNavigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext.jsx';
+// src/components/NavBar.jsx
+import { NavLink, useNavigate } from 'react-router-dom';
+import { Navbar, Nav, Container, Button } from 'react-bootstrap';
+import { useAuth } from '../context/AuthContext';
 
-const linkStyle = { textDecoration: 'none' };
-
-export default function Navbar() {
-  const { isAuthenticated, user, logout } = useAuth();
+export default function NavBar() {
+  const { user, isAuthenticated, logout } = useAuth();
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    logout();
-    navigate('/login', { replace: true });
+    // if you later add an API logout, call it here before clearing local state
+    logout(); // clears localStorage + context (from AuthContext.jsx)
+    navigate('/login'); // requirement: redirect after logout
   };
 
   return (
-    <header style={{ borderBottom: '1px solid #eee' }}>
-      <nav
-        aria-label="Primary"
-        style={{
-          maxWidth: 960,
-          margin: '0 auto',
-          padding: '0.75rem 1rem',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-        }}
-      >
-        <Link to="/" style={{ ...linkStyle, fontWeight: 700 }}>
+    <Navbar expand="md" bg="light" className="mb-3">
+      <Container>
+        <Navbar.Brand as={NavLink} to="/">
           Momentum
-        </Link>
-
-        <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
-          <NavLink to="/" end style={linkStyle}>
-            Home
-          </NavLink>
-          <NavLink to="/dashboard" style={linkStyle}>
-            Dashboard
-          </NavLink>
-
-          {isAuthenticated ? (
-            <>
-              <span aria-live="polite" style={{ opacity: 0.8 }}>
-                {user?.username ? `Hi, ${user.username}` : 'Logged in'}
-              </span>
-              <button type="button" onClick={handleLogout}>
-                Logout
-              </button>
-            </>
-          ) : (
-            <>
-              <NavLink to="/login" style={linkStyle}>
-                Login
-              </NavLink>
-              <NavLink to="/register" style={linkStyle}>
-                Register
-              </NavLink>
-            </>
-          )}
-        </div>
-      </nav>
-    </header>
+        </Navbar.Brand>
+        <Navbar.Toggle aria-controls="main-nav" />
+        <Navbar.Collapse id="main-nav">
+          <Nav className="ms-auto align-items-center">
+            {isAuthenticated ? (
+              <>
+                <span className="me-3 text-muted">
+                  Welcome{user?.username ? `, ${user.username}` : ''}
+                </span>
+                <Button
+                  variant="outline-secondary"
+                  size="sm"
+                  onClick={handleLogout}
+                >
+                  Logout
+                </Button>
+              </>
+            ) : (
+              <>
+                <Nav.Link as={NavLink} to="/login">
+                  Login
+                </Nav.Link>
+                <Nav.Link as={NavLink} to="/register">
+                  Register
+                </Nav.Link>
+              </>
+            )}
+          </Nav>
+        </Navbar.Collapse>
+      </Container>
+    </Navbar>
   );
 }
