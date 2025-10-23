@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useAuth } from '../context/AuthContext.jsx';
 import { useLocation, useNavigate } from 'react-router-dom';
 
@@ -10,6 +10,13 @@ export default function Login() {
   const location = useLocation();
   const from = location.state?.from?.pathname || '/dashboard';
 
+  // ✅ Redirect after auth state changes (not during render)
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate(from, { replace: true });
+    }
+  }, [isAuthenticated, from, navigate]);
+
   const onChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
 
   const onSubmit = async (e) => {
@@ -18,13 +25,8 @@ export default function Login() {
     setLoading(true);
     const ok = await login(form);
     setLoading(false);
-    if (ok) navigate(from, { replace: true });
+    // No immediate navigate here; the effect above will handle it
   };
-
-  if (isAuthenticated) {
-    navigate('/dashboard', { replace: true });
-    return null;
-  }
 
   return (
     <section>
@@ -34,6 +36,7 @@ export default function Login() {
         <input
           id="username"
           name="username"
+          autoComplete="username"
           value={form.username}
           onChange={onChange}
           required
@@ -46,6 +49,7 @@ export default function Login() {
           id="password"
           name="password"
           type="password"
+          autoComplete="current-password"
           value={form.password}
           onChange={onChange}
           required
