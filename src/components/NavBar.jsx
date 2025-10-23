@@ -1,63 +1,45 @@
-import { Link, NavLink, useNavigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext.jsx';
+// components/NavBar.jsx
+import { NavLink } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 
-const linkStyle = { textDecoration: 'none' };
-
-export default function Navbar() {
-  const { isAuthenticated, user, logout } = useAuth();
-  const navigate = useNavigate();
-
-  const handleLogout = () => {
-    logout();
-    navigate('/login', { replace: true });
-  };
+export default function NavBar() {
+  const { user } = useAuth(); // null or {username, ...}
 
   return (
-    <header style={{ borderBottom: '1px solid #eee' }}>
-      <nav
-        aria-label="Primary"
-        style={{
-          maxWidth: 960,
-          margin: '0 auto',
-          padding: '0.75rem 1rem',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-        }}
-      >
-        <Link to="/" style={{ ...linkStyle, fontWeight: 700 }}>
+    <nav className="navbar navbar-expand">
+      <div className="container">
+        <NavLink className="navbar-brand" to="/">
           Momentum
-        </Link>
-
-        <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
-          <NavLink to="/" end style={linkStyle}>
-            Home
-          </NavLink>
-          <NavLink to="/dashboard" style={linkStyle}>
-            Dashboard
-          </NavLink>
-
-          {isAuthenticated ? (
+        </NavLink>
+        <ul className="navbar-nav ms-auto">
+          {!user && (
             <>
-              <span aria-live="polite" style={{ opacity: 0.8 }}>
-                {user?.username ? `Hi, ${user.username}` : 'Logged in'}
-              </span>
-              <button type="button" onClick={handleLogout}>
-                Logout
-              </button>
-            </>
-          ) : (
-            <>
-              <NavLink to="/login" style={linkStyle}>
-                Login
-              </NavLink>
-              <NavLink to="/register" style={linkStyle}>
-                Register
-              </NavLink>
+              <li className="nav-item">
+                <NavLink className="nav-link" to="/login">
+                  Login
+                </NavLink>
+              </li>
+              <li className="nav-item">
+                <NavLink className="nav-link" to="/register">
+                  Register
+                </NavLink>
+              </li>
             </>
           )}
-        </div>
-      </nav>
-    </header>
+          {user && (
+            <>
+              <li className="nav-item">
+                <span className="nav-link disabled">Hi, {user.username}</span>
+              </li>
+              <li className="nav-item">
+                <NavLink className="nav-link" to="/logout">
+                  Logout
+                </NavLink>
+              </li>
+            </>
+          )}
+        </ul>
+      </div>
+    </nav>
   );
 }
