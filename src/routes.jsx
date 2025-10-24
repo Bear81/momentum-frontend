@@ -6,6 +6,7 @@ import ProtectedRoute from './components/ProtectedRoute.jsx';
 import HabitsList from './pages/HabitsList';
 import CreateHabit from './pages/CreateHabit';
 import EditHabit from './pages/EditHabit';
+import DeleteHabit from './pages/DeleteHabit';
 
 // Updated import — new location for Register form
 import Register from './pages/Register.jsx';
@@ -43,6 +44,14 @@ export default function AppRoutes() {
         element={
           <ProtectedRoute>
             <EditHabit />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/habits/:id/delete"
+        element={
+          <ProtectedRoute>
+            <DeleteHabit />
           </ProtectedRoute>
         }
       />

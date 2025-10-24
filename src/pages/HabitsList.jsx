@@ -73,6 +73,12 @@ const HabitsList = () => {
                 >
                   Edit
                 </Link>
+                <Link
+                  to={`/habits/${h.id}/delete`}
+                  className="btn btn-sm btn-outline-danger"
+                >
+                  Delete
+                </Link>
               </div>
             </Card.Body>
           </Card>
