@@ -1,7 +1,7 @@
 ﻿import { render, screen } from "@testing-library/react";
 import { BrowserRouter } from "react-router-dom";
 import { AuthProvider } from "../context/AuthContext.jsx";
-import HabitsList from "../pages/HabitsList.jsx";
+import RootLayout from "../layouts/RootLayout.jsx";
 
 function renderWithProviders(ui) {
   return render(
@@ -11,8 +11,11 @@ function renderWithProviders(ui) {
   );
 }
 
-test("renders HabitsList without crashing", () => {
-  renderWithProviders(<HabitsList />);
-  // smoke: no assertions about data yet
-  // add real assertions later when we wire MSW for API tests
+test("RootLayout renders its children", () => {
+  renderWithProviders(
+    <RootLayout>
+      <h1 data-testid="child">Hello</h1>
+    </RootLayout>
+  );
+  expect(screen.getByTestId("child")).toHaveTextContent("Hello");
 });

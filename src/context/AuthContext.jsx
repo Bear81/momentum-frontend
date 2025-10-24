@@ -1,6 +1,6 @@
-/* eslint-disable react-refresh/only-export-components */
 // src/context/AuthContext.jsx
 import { createContext, useContext, useEffect, useMemo, useState } from 'react';
+import PropTypes from 'prop-types';
 
 // Storage key kept in one place for easy refactor
 const AUTH_KEY = 'auth'; // { user: { username, ... }, access?: string, refresh?: string }
@@ -55,3 +55,7 @@ export function useAuth() {
   if (!ctx) throw new Error('useAuth must be used within <AuthProvider>');
   return ctx;
 }
+
+AuthProvider.propTypes = {
+  children: PropTypes.node,
+};

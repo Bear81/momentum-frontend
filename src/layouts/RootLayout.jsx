@@ -1,4 +1,5 @@
 import Navbar from '../components/NavBar.jsx';
+import PropTypes from 'prop-types';
 
 export default function RootLayout({ children }) {
   return (
@@ -10,3 +11,7 @@ export default function RootLayout({ children }) {
     </div>
   );
 }
+
+RootLayout.propTypes = {
+  children: PropTypes.node,
+};
