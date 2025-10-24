@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { Container, Card, Button, Spinner, Alert } from 'react-bootstrap';
 import api from '../api/axios';
 import { useAuth } from '../context/AuthContext.jsx';
-import { toast } from 'react-toastify';
+import { notify } from '../utils/notify';
 
 export default function DeleteHabit() {
   const { isAuthenticated } = useAuth();
@@ -45,7 +45,7 @@ export default function DeleteHabit() {
     setError('');
     try {
       await api.delete(`habits/${id}/`);
-      toast.success('Habit deleted successfully!');
+      notify.success('Habit deleted successfully!');
       navigate('/habits');
     } catch (err) {
       console.error('Delete habit error:', err?.response || err);

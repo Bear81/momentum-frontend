@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext.jsx';
 import api from '../api/axios';
-import { toast } from 'react-toastify';
+import { notify } from '../utils/notify';
 
 const REGISTER_PATH = '/auth/register/';
 
@@ -63,10 +63,10 @@ export default function Register() {
       if (access && refresh) {
         const u = user || { username: form.username, email: form.email };
         login({ user: u, access, refresh });
-        toast.success('Account created — you’re in!');
+        notify.success('Account created — you’re in!');
         navigate('/dashboard', { replace: true });
       } else {
-        toast.success('Account created! Please log in.');
+        notify.success('Account created! Please log in.');
         navigate('/login', { replace: true });
       }
     } catch (err) {
@@ -85,7 +85,7 @@ export default function Register() {
         !Object.keys(newErrors).length &&
         (data.non_field_errors || data.detail)
       ) {
-        toast.error(
+        notify.error(
           Array.isArray(data.non_field_errors)
             ? data.non_field_errors.join(' ')
             : data.detail || 'Registration failed.'

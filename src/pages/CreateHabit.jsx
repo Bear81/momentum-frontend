@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Container, Form, Button, Alert } from 'react-bootstrap';
 import api from '../api/axios';
-import { toast } from 'react-toastify';
+import { notify } from '../utils/notify';
 import { useAuth } from '../context/AuthContext.jsx';
 
 export default function CreateHabit() {
@@ -51,7 +51,7 @@ export default function CreateHabit() {
       };
 
       await api.post('habits/', payload); // -> <base>/habits/
-      toast.success('Habit created successfully!');
+      notify.success('Habit created successfully!');
       navigate('/habits');
     } catch (err) {
       console.error('Create habit error:', err?.response || err);

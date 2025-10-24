@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { Container, Form, Button, Alert, Spinner } from 'react-bootstrap';
 import api from '../api/axios';
 import { useAuth } from '../context/AuthContext.jsx';
-import { toast } from 'react-toastify';
+import { notify } from '../utils/notify';
 
 export default function EditHabit() {
   const { isAuthenticated } = useAuth();
@@ -79,7 +79,7 @@ export default function EditHabit() {
         tags: form.tags || '',
       };
       await api.put(`habits/${id}/`, payload);
-      toast.success('Habit updated!');
+      notify.success('Habit updated!');
       navigate('/habits');
     } catch (err) {
       console.error('Update habit error:', err?.response || err);
