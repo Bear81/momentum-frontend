@@ -3,7 +3,9 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { Container, Form, Button, Alert, Spinner } from 'react-bootstrap';
 import api from '../api/axios';
 import { useAuth } from '../context/AuthContext.jsx';
-import { toast } from 'react-toastify';
+import { notify } from '../utils/notify';
+
+const PERIODS = ['daily', 'weekly', 'monthly'];
 
 export default function EditHabit() {
   const { isAuthenticated } = useAuth();
@@ -17,9 +19,10 @@ export default function EditHabit() {
     description: '',
     tags: '',
   });
+  const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
-  const [error, setError] = useState('');
+  const [loadError, setLoadError] = useState('');
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -40,7 +43,7 @@ export default function EditHabit() {
         });
       } catch (err) {
         if (!active) return;
-        setError('Failed to load habit.');
+        setLoadError('Failed to load habit.');
         console.error('Load habit error:', err?.response || err);
       } finally {
         if (active) setLoading(false);
@@ -54,46 +57,60 @@ export default function EditHabit() {
   if (!isAuthenticated)
     return <Alert variant="info">Please log in to edit a habit.</Alert>;
   if (loading) return <Spinner animation="border" className="mt-5" />;
-  if (error) return <Alert variant="danger">{error}</Alert>;
+  if (loadError) return <Alert variant="danger">{loadError}</Alert>;
 
-  const onChange = (e) => {
+  const setField = (e) => {
     const { name, value } = e.target;
     setForm((f) => ({
       ...f,
-      [name]: name === 'period' ? value.toLowerCase() : value,
+      [name]:
+        name === 'target'
+          ? value === ''
+            ? ''
+            : Number(value)
+          : name === 'period'
+          ? String(value).toLowerCase()
+          : value,
     }));
+  };
+
+  const validate = () => {
+    const err = {};
+    if (!form.name.trim()) err.name = 'Name is required.';
+    if (!PERIODS.includes(String(form.period).toLowerCase()))
+      err.period = 'Period must be daily, weekly, or monthly.';
+    const t = Number(form.target);
+    if (!(t >= 1)) err.target = 'Target must be 1 or greater.';
+    setErrors(err);
+    return Object.keys(err).length === 0;
   };
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    if (!form.name) return setError('Name is required.');
+    if (!validate()) return;
 
     setSaving(true);
-    setError('');
     try {
       const payload = {
         name: form.name.trim(),
-        period: form.period || 'daily',
-        target: Number(form.target) || 1,
+        period: form.period,
+        target: Number(form.target),
         description: form.description || '',
         tags: form.tags || '',
       };
       await api.put(`habits/${id}/`, payload);
-      toast.success('Habit updated!');
+      notify.success('Habit updated!');
       navigate('/habits');
     } catch (err) {
-      console.error('Update habit error:', err?.response || err);
       const data = err?.response?.data || {};
       const first = Object.keys(data)[0];
       if (first)
-        setError(
+        notify.error(
           `${first}: ${
             Array.isArray(data[first]) ? data[first][0] : data[first]
           }`
         );
-      else if (err?.response?.status === 401)
-        setError('Unauthorized. Please log in again.');
-      else setError('Failed to update habit. Please try again.');
+      else notify.error('Failed to update habit. Please try again.');
     } finally {
       setSaving(false);
     }
@@ -102,52 +119,68 @@ export default function EditHabit() {
   return (
     <Container className="py-4" style={{ maxWidth: 560 }}>
       <h2 className="mb-3">Edit Habit</h2>
-      {error && <Alert variant="danger">{error}</Alert>}
-      <Form onSubmit={onSubmit}>
-        <Form.Group className="mb-3">
+
+      <Form noValidate onSubmit={onSubmit}>
+        <Form.Group className="mb-3" controlId="hab-name">
           <Form.Label>Name</Form.Label>
           <Form.Control
             name="name"
             value={form.name}
-            onChange={onChange}
+            onChange={setField}
+            isInvalid={!!errors.name}
             required
           />
+          <Form.Control.Feedback type="invalid">
+            {errors.name}
+          </Form.Control.Feedback>
         </Form.Group>
 
-        <Form.Group className="mb-3">
+        <Form.Group className="mb-3" controlId="hab-period">
           <Form.Label>Period</Form.Label>
-          <Form.Select name="period" value={form.period} onChange={onChange}>
+          <Form.Select
+            name="period"
+            value={form.period}
+            onChange={setField}
+            isInvalid={!!errors.period}
+          >
             <option value="daily">Daily</option>
             <option value="weekly">Weekly</option>
             <option value="monthly">Monthly</option>
           </Form.Select>
+          <Form.Control.Feedback type="invalid">
+            {errors.period}
+          </Form.Control.Feedback>
         </Form.Group>
 
-        <Form.Group className="mb-3">
+        <Form.Group className="mb-3" controlId="hab-target">
           <Form.Label>Target (per period)</Form.Label>
           <Form.Control
             name="target"
             type="number"
             min={1}
             value={form.target}
-            onChange={onChange}
+            onChange={setField}
+            isInvalid={!!errors.target}
           />
+          <Form.Control.Feedback type="invalid">
+            {errors.target}
+          </Form.Control.Feedback>
         </Form.Group>
 
-        <Form.Group className="mb-3">
+        <Form.Group className="mb-3" controlId="hab-desc">
           <Form.Label>Description (optional)</Form.Label>
           <Form.Control
             as="textarea"
             rows={3}
             name="description"
             value={form.description}
-            onChange={onChange}
+            onChange={setField}
           />
         </Form.Group>
 
-        <Form.Group className="mb-4">
+        <Form.Group className="mb-4" controlId="hab-tags">
           <Form.Label>Tags (optional)</Form.Label>
-          <Form.Control name="tags" value={form.tags} onChange={onChange} />
+          <Form.Control name="tags" value={form.tags} onChange={setField} />
         </Form.Group>
 
         <Button type="submit" className="w-100" disabled={saving}>

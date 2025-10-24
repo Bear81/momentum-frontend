@@ -1,5 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { Card, Spinner, Alert, Container } from 'react-bootstrap';
+import {
+  Card,
+  Spinner,
+  Alert,
+  Container,
+  Form,
+  Row,
+  Col,
+  Button,
+} from 'react-bootstrap';
 import api from '../api/axios';
 import { useAuth } from '../context/AuthContext.jsx';
 import { Link } from 'react-router-dom';
@@ -9,17 +18,19 @@ const HabitsList = () => {
   const [habits, setHabits] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [query, setQuery] = useState('');
+  const [period, setPeriod] = useState('all');
 
   useEffect(() => {
     if (!isAuthenticated) {
       setLoading(false);
       return;
     }
-    let active = true;
 
+    let active = true;
     (async () => {
       try {
-        const { data } = await api.get('habits/'); // -> <base>/habits/
+        const { data } = await api.get('habits/'); // baseURL + "habits/"
         const list = Array.isArray(data)
           ? data
           : Array.isArray(data?.results)
@@ -29,17 +40,16 @@ const HabitsList = () => {
       } catch (err) {
         if (!active) return;
         const status = err?.response?.status;
-        setError(
-          status === 401
-            ? 'Unauthorized. Please log in again.'
-            : 'Failed to load habits. Please try again.'
-        );
+        if (status === 401) {
+          setError('Unauthorized. Please log in again.');
+        } else {
+          setError('Failed to load habits. Please try again.');
+        }
         console.error('Habits fetch error:', err);
       } finally {
         if (active) setLoading(false);
       }
     })();
-
     return () => {
       active = false;
     };
@@ -50,11 +60,48 @@ const HabitsList = () => {
   if (loading) return <Spinner animation="border" className="mt-5" />;
   if (error) return <Alert variant="danger">{error}</Alert>;
 
+  // ✅ Filter logic
+  const filtered = habits.filter((h) => {
+    const text = `${h.name} ${h.description || ''} ${
+      h.tags || ''
+    }`.toLowerCase();
+    const matchesQuery = text.includes(query.toLowerCase());
+    const matchesPeriod =
+      period === 'all' || h.period?.toLowerCase() === period.toLowerCase();
+    return matchesQuery && matchesPeriod;
+  });
+
   return (
     <Container className="mt-4">
       <h2 className="mb-3">My Habits</h2>
-      {habits.length ? (
-        habits.map((h) => (
+
+      {/* 🔍 Search + Filter Controls */}
+      <Form className="mb-4">
+        <Row>
+          <Col md={8} className="mb-2">
+            <Form.Control
+              type="text"
+              placeholder="Search by name, tags, or description..."
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+            />
+          </Col>
+          <Col md={4} className="mb-2">
+            <Form.Select
+              value={period}
+              onChange={(e) => setPeriod(e.target.value)}
+            >
+              <option value="all">All Periods</option>
+              <option value="daily">Daily</option>
+              <option value="weekly">Weekly</option>
+              <option value="monthly">Monthly</option>
+            </Form.Select>
+          </Col>
+        </Row>
+      </Form>
+
+      {filtered.length ? (
+        filtered.map((h) => (
           <Card key={h.id} className="mb-3 shadow-sm">
             <Card.Body>
               <Card.Title>{h.name}</Card.Title>
@@ -66,23 +113,36 @@ const HabitsList = () => {
               {h.description && (
                 <Card.Text className="mb-1">{h.description}</Card.Text>
               )}
+              {h.created_at && (
+                <small className="text-muted d-block mb-2">
+                  Created: {new Date(h.created_at).toLocaleDateString()}
+                </small>
+              )}
+
+              {/* Actions */}
               <div className="d-flex gap-2">
-                <Link
+                <Button
+                  as={Link}
                   to={`/habits/${h.id}/edit`}
-                  className="btn btn-sm btn-outline-primary"
+                  size="sm"
+                  variant="outline-primary"
                 >
                   Edit
-                </Link>
-                <Link
+                </Button>
+                <Button
+                  as={Link}
                   to={`/habits/${h.id}/delete`}
-                  className="btn btn-sm btn-outline-danger"
+                  size="sm"
+                  variant="outline-danger"
                 >
                   Delete
-                </Link>
+                </Button>
               </div>
             </Card.Body>
           </Card>
         ))
+      ) : habits.length ? (
+        <Alert variant="secondary">No habits match your filters.</Alert>
       ) : (
         <Alert variant="secondary">No habits found.</Alert>
       )}

@@ -1,9 +1,8 @@
-// src/pages/Login.jsx
 import { useEffect, useState } from 'react';
 import { useAuth } from '../context/AuthContext.jsx';
 import { useLocation, useNavigate } from 'react-router-dom';
 import api from '../api/axios';
-import { toast } from 'react-toastify';
+import { notify } from '../utils/notify';
 
 export default function Login() {
   const { login, isAuthenticated } = useAuth();
@@ -25,33 +24,32 @@ export default function Login() {
 
     setLoading(true);
     try {
-      // ✅ NOTE: no leading slash — baseURL already ends with /api/v1/
+      // NOTE: no leading slash; baseURL already includes /api/v1/
       const { data } = await api.post('auth/token/', {
         username: form.username,
         password: form.password,
       });
-      // data: { access, refresh }
-      toast.success('Login successful!');
 
-      // ✅ Write tokens exactly where axios interceptor expects them
+      // Persist tokens for axios interceptor
       localStorage.setItem('access', data.access);
       localStorage.setItem('refresh', data.refresh);
       localStorage.setItem('authTokens', JSON.stringify(data));
 
-      // ✅ Update context (preserve your existing shape)
-      const user = { username: form.username }; // SimpleJWT doesn't return user details
+      // Update auth context if available
+      const user = { username: form.username };
       if (typeof login === 'function') {
         login({ user, access: data.access, refresh: data.refresh });
       }
 
+      notify.success('Login successful!');
       navigate(from, { replace: true });
     } catch (err) {
       console.error('Login error:', err?.response || err);
       const status = err?.response?.status;
       if (status === 401) {
-        toast.error('Invalid username or password');
+        notify.error('Invalid username or password');
       } else {
-        toast.error('Login failed. Please try again.');
+        notify.error('Login failed. Please try again.');
       }
     } finally {
       setLoading(false);
