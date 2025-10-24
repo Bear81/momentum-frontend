@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react';
 import { useAuth } from '../context/AuthContext.jsx';
 import { useLocation, useNavigate } from 'react-router-dom';
-import api from '../api/axios'; // ⬅️ use our axios instance
+import api from '../api/axios';
 import { toast } from 'react-toastify';
 
 export default function Login() {
@@ -25,22 +25,28 @@ export default function Login() {
 
     setLoading(true);
     try {
-      // ⬇️ SimpleJWT login endpoint (with baseURL = https://.../api/v1)
-      const response = await api.post('/auth/token/', {
+      // ✅ NOTE: no leading slash — baseURL already ends with /api/v1/
+      const { data } = await api.post('auth/token/', {
         username: form.username,
         password: form.password,
       });
-
-      console.log('Login response:', response.data); // { access, refresh }
+      // data: { access, refresh }
       toast.success('Login successful!');
 
-      const { access, refresh } = response.data;
-      const user = { username: form.username }; // SimpleJWT doesn’t return user by default
+      // ✅ Write tokens exactly where axios interceptor expects them
+      localStorage.setItem('access', data.access);
+      localStorage.setItem('refresh', data.refresh);
+      localStorage.setItem('authTokens', JSON.stringify(data));
 
-      login({ user, access, refresh }); // updates context + localStorage
+      // ✅ Update context (preserve your existing shape)
+      const user = { username: form.username }; // SimpleJWT doesn't return user details
+      if (typeof login === 'function') {
+        login({ user, access: data.access, refresh: data.refresh });
+      }
+
       navigate(from, { replace: true });
     } catch (err) {
-      console.error('Login error:', err.response || err);
+      console.error('Login error:', err?.response || err);
       const status = err?.response?.status;
       if (status === 401) {
         toast.error('Invalid username or password');

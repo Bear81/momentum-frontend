@@ -3,9 +3,12 @@ import Home from './pages/Home.jsx';
 import Dashboard from './pages/Dashboard.jsx';
 import Login from './pages/Login.jsx';
 import ProtectedRoute from './components/ProtectedRoute.jsx';
+import HabitsList from './pages/HabitsList';
+import CreateHabit from './pages/CreateHabit';
+import EditHabit from './pages/EditHabit';
 
 // Updated import — new location for Register form
-import Register from './pages/auth/Register.jsx';
+import Register from './pages/Register.jsx';
 
 export default function AppRoutes() {
   return (
@@ -16,6 +19,30 @@ export default function AppRoutes() {
         element={
           <ProtectedRoute>
             <Dashboard />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/habits"
+        element={
+          <ProtectedRoute>
+            <HabitsList />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/habits/create"
+        element={
+          <ProtectedRoute>
+            <CreateHabit />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/habits/:id/edit"
+        element={
+          <ProtectedRoute>
+            <EditHabit />
           </ProtectedRoute>
         }
       />
