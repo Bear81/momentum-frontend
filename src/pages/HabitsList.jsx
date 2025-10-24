@@ -7,9 +7,11 @@ import {
   Form,
   Row,
   Col,
+  Button,
 } from 'react-bootstrap';
 import api from '../api/axios';
 import { useAuth } from '../context/AuthContext.jsx';
+import { Link } from 'react-router-dom';
 
 const HabitsList = () => {
   const { isAuthenticated } = useAuth();
@@ -112,10 +114,30 @@ const HabitsList = () => {
                 <Card.Text className="mb-1">{h.description}</Card.Text>
               )}
               {h.created_at && (
-                <small className="text-muted">
+                <small className="text-muted d-block mb-2">
                   Created: {new Date(h.created_at).toLocaleDateString()}
                 </small>
               )}
+
+              {/* Actions */}
+              <div className="d-flex gap-2">
+                <Button
+                  as={Link}
+                  to={`/habits/${h.id}/edit`}
+                  size="sm"
+                  variant="outline-primary"
+                >
+                  Edit
+                </Button>
+                <Button
+                  as={Link}
+                  to={`/habits/${h.id}/delete`}
+                  size="sm"
+                  variant="outline-danger"
+                >
+                  Delete
+                </Button>
+              </div>
             </Card.Body>
           </Card>
         ))
