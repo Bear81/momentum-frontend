@@ -8,30 +8,48 @@ export default function NavBar() {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    logout();            // clears localStorage + context
-    navigate('/login');  // redirect after logout
+    logout(); // clears localStorage + context
+    navigate('/login'); // redirect after logout
   };
 
   return (
     <Navbar expand="md" bg="light" className="mb-3">
       <Container>
-        <Navbar.Brand as={NavLink} to="/">Momentum</Navbar.Brand>
+        <Navbar.Brand as={NavLink} to="/">
+          Momentum
+        </Navbar.Brand>
         <Navbar.Toggle aria-controls="main-nav" />
         <Navbar.Collapse id="main-nav">
           <Nav className="ms-auto align-items-center">
             {isAuthenticated ? (
               <>
+                {user && (
+                  <Nav.Link as={NavLink} to="/habits">
+                    My Habits
+                  </Nav.Link>
+                )}
+                <Nav.Link as={NavLink} to="/habits/create" className="me-3">
+                  New Habit
+                </Nav.Link>
                 <span className="me-3 text-muted">
                   Welcome{user?.username ? `, ${user.username}` : ''}
                 </span>
-                <Button variant="outline-secondary" size="sm" onClick={handleLogout}>
+                <Button
+                  variant="outline-secondary"
+                  size="sm"
+                  onClick={handleLogout}
+                >
                   Logout
                 </Button>
               </>
             ) : (
               <>
-                <Nav.Link as={NavLink} to="/login">Login</Nav.Link>
-                <Nav.Link as={NavLink} to="/register">Register</Nav.Link>
+                <Nav.Link as={NavLink} to="/login">
+                  Login
+                </Nav.Link>
+                <Nav.Link as={NavLink} to="/register">
+                  Register
+                </Nav.Link>
               </>
             )}
           </Nav>

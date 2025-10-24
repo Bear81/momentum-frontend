@@ -29,3 +29,27 @@ User Feedback: Inline field errors + toast notifications for success/failure (LO
 Security & UX: No plaintext secrets in FE; login state reflected in navigation with greeting (LO4.7).
 
 Endpoints: Registration posts to /dj-rest-auth/registration/. Adjust if your backend differs.
+
+## Authentication Setup (Momentum)
+
+**Frontend**
+
+- Uses SimpleJWT access/refresh tokens.
+- Tokens saved under:
+  - `localStorage.access`
+  - `localStorage.refresh`
+  - `localStorage.authTokens` (bundle for compatibility)
+- `axios.js` sends tokens in `Authorization: Bearer <access>` automatically.
+
+**Backend**
+
+- `/api/v1/auth/token/` and `/api/v1/auth/token/refresh/` use SimpleJWT.
+- `REST_FRAMEWORK` includes:
+  - `SessionAuthentication`
+  - `JWTAuthentication`
+- All endpoints accept either (safe for existing views).
+
+**Rules**
+
+- No leading slashes in API calls (`api.get("habits/")` ✅).
+- Tokens refreshed manually via `/auth/token/refresh/` if needed.
