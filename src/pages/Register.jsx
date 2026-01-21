@@ -5,6 +5,7 @@ import { useAuth } from '../context/AuthContext.jsx';
 import api from '../api/axios';
 import { notify } from '../utils/notify';
 
+// API URL
 const REGISTER_PATH = 'api/v1/auth/register/';
 
 export default function Register() {
