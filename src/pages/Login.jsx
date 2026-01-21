@@ -24,7 +24,7 @@ export default function Login() {
 
     setLoading(true);
     try {
-      const { data } = await api.post('api/v1/auth/token/', {
+      const { data } = await api.post('auth/token/', {
         username: form.username,
         password: form.password,
       });

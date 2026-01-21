@@ -6,7 +6,7 @@ import api from '../api/axios';
 import { notify } from '../utils/notify';
 
 // API URL
-const REGISTER_PATH = 'api/v1/auth/register/';
+const REGISTER_PATH = 'auth/register/';
 
 export default function Register() {
   const navigate = useNavigate();
