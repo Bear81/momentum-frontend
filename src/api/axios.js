@@ -5,7 +5,8 @@ import { notify } from '../utils/notify';
 const raw = import.meta.env.VITE_API_BASE;
 if (!raw) throw new Error('VITE_API_BASE is not set');
 
-const baseURL = raw.endsWith('/') ? raw : `${raw}/`;
+const root = raw.replace(/\/+$/, '');
+const baseURL = `${root}/api/v1/`;
 
 const api = axios.create({
   baseURL,
