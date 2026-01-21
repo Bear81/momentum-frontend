@@ -24,8 +24,7 @@ export default function Login() {
 
     setLoading(true);
     try {
-      // NOTE: no leading slash; baseURL already includes /api/v1/
-      const { data } = await api.post('auth/token/', {
+      const { data } = await api.post('api/v1/auth/token/', {
         username: form.username,
         password: form.password,
       });
