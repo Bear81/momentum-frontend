@@ -8,8 +8,6 @@ if (!raw) throw new Error('VITE_API_BASE is not set');
 const root = raw.replace(/\/+$/, '');
 const baseURL = `${root}/api/v1/`;
 
-console.log('API baseURL at runtime:', baseURL);
-
 const api = axios.create({
   baseURL,
   withCredentials: false, // JWT tokens, not cookies
@@ -27,14 +25,6 @@ api.interceptors.request.use((config) => {
   if (!isAuthRoute) {
     const token = localStorage.getItem('access');
     if (token) config.headers.Authorization = `Bearer ${token}`;
-  }
-
-  if (url.includes('habits')) {
-    console.log('AXIOS REQUEST:', {
-      baseURL: config.baseURL,
-      url: config.url,
-      full: `${config.baseURL || ''}${config.url || ''}`,
-    });
   }
 
   return config;
