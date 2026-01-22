@@ -12,6 +12,22 @@ This project is a resubmission of Code Institute’s Portfolio Project 5 and mee
 
 ---
 
+## Table of Contents
+
+- [Introduction](#introduction)
+- [Agile Methodology](#agile-methodology)
+- [UX](#ux)
+- [Features](#features)
+- [Design](#design)
+- [Technology Stack](#technology-stack)
+- [Testing](#testing)
+- [Deployment](#deployment)
+- [Local Development](#local-development)
+- [Known Issues](#known-issues)
+- [Credits](#credits)
+
+---
+
 ## Agile Methodology
 
 The project followed an Agile development approach using a GitHub Project board to track user stories, tasks, and progress throughout development.
@@ -24,6 +40,21 @@ The GitHub Project board can be viewed here:
 https://github.com/users/Bear81/projects/8
 
 Milestones were used to organise development phases and track progress. Core functionality was prioritised to ensure assessment requirements were met, with additional ideas recorded as future enhancements.
+
+### Board Structure
+
+Development was tracked using a GitHub Project board with Epics and user stories grouped by feature area:
+
+- Authentication
+- Habit CRUD
+- UX / UI improvements
+- Documentation and testing evidence
+- Deployment and security verification
+
+### Evidence Traceability
+
+Each completed feature was developed against a corresponding board card and validated through manual testing.
+Final documentation updates (README/TESTING) were tracked as separate tickets to ensure evidence matched the implemented functionality.
 
 ---
 
@@ -77,7 +108,32 @@ The primary user goals supported by the application are:
 - Unauthorized access attempts are prevented
 - Empty states (e.g. no habits created) are handled gracefully
 
+### UX Design Decisions (Implemented)
+
+Momentum was intentionally designed as a low-friction habit tool:
+
+- The landing page uses a single clear value proposition and call-to-action to reduce decision fatigue.
+- Navigation changes based on authentication state to prevent users accessing pages that require login.
+- Forms use inline validation and clear error messaging to minimise failed submissions.
+- Empty states (e.g., “No habits found”) are explicitly handled to avoid blank screens and confusion.
+
+---
+
 ## Features
+
+### Feature Screenshots
+
+**Landing Page**
+![Landing page](documentation/screenshots/landing-desktop.png)
+
+**Login**
+![Login page](documentation/screenshots/login.png)
+
+**Habits List**
+![Habits list](documentation/screenshots/habits-list.png)
+
+**Create Habit**
+![Create habit form](documentation/screenshots/create-habit.png)
 
 ### Landing Page
 
@@ -222,9 +278,20 @@ During development, minor adjustments were made to spacing, component sizing, an
 **Create Habit (Mobile)**
 ![Create habit wireframe (mobile)](documentation/wireframes/create_habit_mobile.png)
 
+### Visual Design
+
+Momentum uses a dark, high-contrast theme to support readability and reduce glare. The interface relies on:
+
+- clear typographic hierarchy (large headings, readable body text)
+- consistent spacing and card layouts for scan-friendly reading
+- a single primary action style (buttons/CTAs) to reinforce predictable interactions
+
 ### Colours
 
-A clean, high-contrast colour palette was used to ensure readability and accessibility. Colours were chosen to provide clear visual hierarchy while maintaining a minimal, distraction-free interface.
+A clean, high-contrast palette was chosen to prioritise readability and accessibility. Accent colours are used sparingly to highlight:
+
+- primary actions (e.g. submit / dashboard navigation)
+- status feedback (alerts and validation states)
 
 ---
 
@@ -241,7 +308,15 @@ The following features are planned for future development:
 
 ## Component Structure
 
-This project follows a clear component hierarchy, with layout, navigation, authentication context, and feature pages separated to ensure maintainability and clarity.
+## Component Structure
+
+The frontend is structured to keep responsibilities clear and state predictable:
+
+- `RootLayout` provides consistent layout and applies page-level container rules.
+- `NavBar` renders navigation links conditionally based on authentication state.
+- `AuthContext` owns authentication state and token persistence, exposing `login` and `logout` actions.
+- Page components (`Home`, `Login`, `Register`, `HabitsList`, `CreateHabit`, `EditHabit`, `DeleteHabit`) manage local UI state relevant to their route.
+- A single Axios instance (`src/api/axios.js`) centralises API configuration, token injection, and global error handling.
 
 ---
 
@@ -330,6 +405,47 @@ Both desktop and mobile Lighthouse results are documented with supporting screen
 
 ---
 
+## Local Development
+
+The Momentum frontend can be run locally for development and testing.
+
+### Prerequisites
+
+- Node.js (LTS version recommended)
+- npm
+
+### Setup and Running Locally
+
+1. Clone the frontend repository:
+   ```bash
+   git clone https://github.com/Bear81/momentum-frontend.git
+   cd momentum-frontend
+   ```
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+3. Create a local environment file:
+   ```bash
+   cp .env.example .env.local
+   ```
+4. Configure the API base URL in `.env.local`:
+   ```env
+   VITE_API_BASE=http://127.0.0.1:8000
+   ```
+5. Start the development server:
+   ```bash
+   npm run dev
+   ```
+6. Open the application in your browser:
+   ```text
+   http://localhost:5173
+   ```
+
+The development server supports hot reloading for rapid UI iteration.
+
+---
+
 ## Deployment
 
 The Momentum frontend application was deployed to Heroku to ensure consistent behaviour between local development and production environments.
@@ -398,3 +514,5 @@ No known unresolved issues at the time of submission.
 
 - Code Institute for course materials and guidance
 - Code Institute mentor for guidance and feedback
+- React Bootstrap
+- SimpleJWT (mention indirectly via backend is fine, but frontend uses JWT)
