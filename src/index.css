@@ -24,8 +24,6 @@ a:hover {
 
 body {
   margin: 0;
-  display: flex;
-  place-items: center;
   min-width: 320px;
   min-height: 100vh;
 }
@@ -65,4 +63,27 @@ button:focus-visible {
   button {
     background-color: #f9f9f9;
   }
+}
+/* App Navbar (global) */
+.app-navbar {
+  background: rgba(15, 17, 21, 0.85) !important;
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.app-navbar .navbar-brand,
+.app-navbar .nav-link {
+  color: rgba(245, 247, 251, 0.92) !important;
+}
+
+.app-navbar .nav-link:hover {
+  color: #ffffff !important;
+}
+
+.app-navbar .navbar-toggler {
+  border-color: rgba(255, 255, 255, 0.25) !important;
+}
+
+.app-navbar .navbar-toggler-icon {
+  filter: invert(1);
 }

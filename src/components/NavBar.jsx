@@ -13,7 +13,7 @@ export default function NavBar() {
   };
 
   return (
-    <Navbar expand="md" bg="light" className="mb-3">
+    <Navbar expand="md" variant="dark" className="app-navbar">
       <Container>
         <Navbar.Brand as={NavLink} to="/">
           Momentum
@@ -31,7 +31,7 @@ export default function NavBar() {
                 <Nav.Link as={NavLink} to="/habits/create" className="me-3">
                   New Habit
                 </Nav.Link>
-                <span className="me-3 text-muted">
+                <span className="me-3 text-white-50">
                   Welcome{user?.username ? `, ${user.username}` : ''}
                 </span>
                 <Button
