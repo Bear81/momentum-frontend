@@ -1,0 +1,145 @@
+.page {
+  background: #0f1115;
+  color: #f5f7fb;
+}
+
+.hero {
+  padding: 5rem 0 3rem 0;
+  background:
+    radial-gradient(
+      1200px 600px at 20% 20%,
+      rgba(88, 101, 242, 0.25),
+      transparent 60%
+    ),
+    radial-gradient(
+      900px 500px at 80% 30%,
+      rgba(46, 204, 113, 0.18),
+      transparent 55%
+    ),
+    linear-gradient(180deg, #0f1115 0%, #0b0d12 100%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.title {
+  font-size: clamp(2.2rem, 4vw, 3.2rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin-bottom: 0.75rem;
+}
+
+.subtitle {
+  max-width: 52ch;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: rgba(245, 247, 251, 0.78);
+  margin-bottom: 0;
+}
+
+.microcopy {
+  margin-top: 1rem;
+  color: rgba(245, 247, 251, 0.6);
+  font-size: 0.95rem;
+}
+
+.panel {
+  border-radius: 1.25rem;
+  padding: 1px;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.14),
+    rgba(255, 255, 255, 0.04)
+  );
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.45);
+}
+
+.panelInner {
+  border-radius: 1.25rem;
+  background: rgba(255, 255, 255, 0.04);
+  padding: 1.25rem;
+  min-height: 260px;
+  backdrop-filter: blur(8px);
+}
+
+.fakeRow,
+.fakeRowShort {
+  height: 14px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.1);
+  margin-bottom: 12px;
+}
+
+.fakeRowShort {
+  width: 60%;
+}
+
+.fakePills {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.pill {
+  height: 28px;
+  width: 70px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.section {
+  padding: 3rem 0;
+}
+
+.sectionAlt {
+  padding: 3rem 0;
+  background: rgba(255, 255, 255, 0.02);
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.sectionTitle {
+  font-size: 1.4rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.card {
+  background: rgba(255, 255, 255, 0.04) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-radius: 1rem !important;
+}
+
+.cardTitle {
+  font-size: 1.05rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.cardText {
+  color: rgba(245, 247, 251, 0.75);
+  margin-bottom: 0;
+  line-height: 1.55;
+}
+
+.cta {
+  padding: 3.25rem 0 4rem 0;
+  background:
+    radial-gradient(
+      900px 500px at 50% 0%,
+      rgba(88, 101, 242, 0.18),
+      transparent 55%
+    ),
+    linear-gradient(180deg, #0b0d12 0%, #07080c 100%);
+}
+
+.ctaTitle {
+  font-size: 1.8rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  margin-bottom: 0.6rem;
+}
+
+.ctaText {
+  color: rgba(245, 247, 251, 0.72);
+  max-width: 60ch;
+  margin: 0 auto 1.25rem auto;
+}
