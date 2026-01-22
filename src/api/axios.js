@@ -15,8 +15,18 @@ const api = axios.create({
 
 // ✅ Attach token to every request
 api.interceptors.request.use((config) => {
-  const token = localStorage.getItem('access');
-  if (token) config.headers.Authorization = `Bearer ${token}`;
+  const url = config?.url || '';
+
+  const isAuthRoute =
+    url.includes('auth/register/') ||
+    url.includes('auth/token/') ||
+    url.includes('auth/token/refresh/');
+
+  if (!isAuthRoute) {
+    const token = localStorage.getItem('access');
+    if (token) config.headers.Authorization = `Bearer ${token}`;
+  }
+
   return config;
 });
 
