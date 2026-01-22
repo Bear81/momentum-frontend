@@ -225,11 +225,72 @@ This project follows a clear component hierarchy, with layout, navigation, authe
 
 ## Testing
 
-Frontend testing was carried out throughout development. Detailed manual testing results and validation evidence are documented separately.
+Testing was carried out throughout development to ensure core functionality worked correctly and the application behaved consistently across environments.
 
-Please see the frontend testing documentation for full details.
+Both manual and automated testing were used, alongside validation and performance checks. The application was tested in local development and in the deployed Heroku environment to confirm production behaviour matched expected results.
+
+A full breakdown of manual test cases, validation results, and supporting screenshots is provided in the dedicated testing document:
+
+- Frontend testing documentation: `MOMENTUM_FRONTEND_TESTING.md`
 
 ---
+
+### Manual Testing
+
+Manual testing focused on validating complete user journeys and ensuring the application met the assessment requirements. This included:
+
+- Registration, login, logout user flows
+- JWT persistence across refresh
+- Habit CRUD operations (create, list, update, delete)
+- Ownership rules (users cannot modify other users’ habits)
+- Form validation behaviour and error messaging
+- Empty states and loading states
+- Responsive behaviour on desktop and mobile
+
+Manual test cases are recorded with:
+
+- Test case IDs
+- Steps to reproduce
+- Expected vs actual results
+- Pass/fail outcome
+- Evidence screenshots where applicable
+
+---
+
+### Automated Testing
+
+Automated tests were used to confirm that core pages render correctly and that key components load without runtime errors.
+
+- Smoke tests for route rendering (landing page, login, register, habits)
+- Component-level tests for core habit list behaviour
+
+Further automated test results are documented in `MOMENTUM_FRONTEND_TESTING.md`.
+
+---
+
+### Validation
+
+The following validation and quality checks were performed:
+
+- ESLint checks for JavaScript/React code quality
+- HTML validation (W3C validator)
+- CSS validation (W3C validator)
+- Browser console checked for runtime errors and warnings
+
+Screenshots and results are included in the frontend testing document.
+
+---
+
+### Performance & Accessibility
+
+Lighthouse testing was used to evaluate:
+
+- Performance
+- Accessibility
+- Best Practices
+- SEO
+
+Desktop and mobile results are documented with evidence in `MOMENTUM_FRONTEND_TESTING.md`.
 
 ## Deployment
 
