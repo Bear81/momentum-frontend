@@ -8,6 +8,8 @@ if (!raw) throw new Error('VITE_API_BASE is not set');
 const root = raw.replace(/\/+$/, '');
 const baseURL = `${root}/api/v1/`;
 
+console.log('API baseURL at runtime:', baseURL);
+
 const api = axios.create({
   baseURL,
   withCredentials: false, // JWT tokens, not cookies
