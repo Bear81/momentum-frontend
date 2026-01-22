@@ -239,58 +239,62 @@ A full breakdown of manual test cases, validation results, and supporting screen
 
 Manual testing focused on validating complete user journeys and ensuring the application met the assessment requirements. This included:
 
-- Registration, login, logout user flows
-- JWT persistence across refresh
+- Registration, login, and logout flows
+- JWT persistence across page refresh
 - Habit CRUD operations (create, list, update, delete)
-- Ownership rules (users cannot modify other users’ habits)
+- Ownership rules preventing modification of other users’ habits
 - Form validation behaviour and error messaging
 - Empty states and loading states
-- Responsive behaviour on desktop and mobile
+- Responsive behaviour on desktop and mobile devices
 
-Manual test cases are recorded with:
+Manual test cases are documented with:
 
 - Test case IDs
 - Steps to reproduce
 - Expected vs actual results
-- Pass/fail outcome
+- Pass/fail outcomes
 - Evidence screenshots where applicable
 
 ---
 
 ### Automated Testing
 
-Automated tests were used to confirm that core pages render correctly and that key components load without runtime errors.
+Automated tests were implemented to confirm that core pages and components render correctly without runtime errors.
 
-- Smoke tests for route rendering (landing page, login, register, habits)
-- Component-level tests for core habit list behaviour
+These include:
 
-Further automated test results are documented in `MOMENTUM_FRONTEND_TESTING.md`.
+- Smoke tests for key routes (landing page, login, register, habits)
+- Component-level tests for habit list rendering
+
+Further details and results are documented in `MOMENTUM_FRONTEND_TESTING.md`.
 
 ---
 
 ### Validation
 
-The following validation and quality checks were performed:
+The following validation checks were performed:
 
-- ESLint checks for JavaScript/React code quality
-- HTML validation (W3C validator)
-- CSS validation (W3C validator)
+- ESLint validation for JavaScript and React code quality
+- HTML validation using the W3C validator
+- CSS validation using the W3C validator
 - Browser console checked for runtime errors and warnings
 
-Screenshots and results are included in the frontend testing document.
+Screenshots and validation results are included in the frontend testing documentation.
 
 ---
 
 ### Performance & Accessibility
 
-Lighthouse testing was used to evaluate:
+Lighthouse testing was used to assess:
 
 - Performance
 - Accessibility
 - Best Practices
 - SEO
 
-Desktop and mobile results are documented with evidence in `MOMENTUM_FRONTEND_TESTING.md`.
+Both desktop and mobile Lighthouse results are documented with supporting screenshots in `MOMENTUM_FRONTEND_TESTING.md`.
+
+---
 
 ## Deployment
 
