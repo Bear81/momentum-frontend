@@ -29,6 +29,14 @@ api.interceptors.request.use((config) => {
     if (token) config.headers.Authorization = `Bearer ${token}`;
   }
 
+  if (url.includes('habits')) {
+    console.log('AXIOS REQUEST:', {
+      baseURL: config.baseURL,
+      url: config.url,
+      full: `${config.baseURL || ''}${config.url || ''}`,
+    });
+  }
+
   return config;
 });
 

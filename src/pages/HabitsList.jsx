@@ -30,12 +30,13 @@ const HabitsList = () => {
     let active = true;
     (async () => {
       try {
+        console.log('HabitsList api.defaults.baseURL:', api?.defaults?.baseURL);
         const { data } = await api.get('habits/'); // baseURL + "habits/"
         const list = Array.isArray(data)
           ? data
           : Array.isArray(data?.results)
-          ? data.results
-          : [];
+            ? data.results
+            : [];
         if (active) setHabits(list);
       } catch (err) {
         if (!active) return;
