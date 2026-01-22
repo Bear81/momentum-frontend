@@ -29,16 +29,53 @@ Milestones were used to organise development phases and track progress. Core fun
 
 ## UX
 
-### User Goals
+The user experience of Momentum was designed to be simple, focused, and intuitive. The application avoids unnecessary complexity and presents only the information required for users to manage their habits effectively.
 
-- Register an account securely
-- Log in and out of the application
-- Create personal habits
-- View a list of owned habits
-- Edit or delete owned habits
-- Use the application comfortably on different screen sizes
+Clear navigation, consistent layouts, and predictable interactions were prioritised to ensure users can quickly understand how to use the application without prior instruction.
 
 ---
+
+### User Goals
+
+The primary user goals supported by the application are:
+
+- Register an account securely
+- Log in and maintain authentication across sessions
+- Create personal habits
+- View an overview of all owned habits
+- Edit or delete habits as required
+- Log out securely
+- Use the application comfortably on desktop and mobile devices
+
+---
+
+### User Journeys
+
+#### New User Journey
+
+1. User lands on the homepage and is presented with a clear explanation of the application’s purpose
+2. User navigates to the registration page via call-to-action buttons
+3. User registers an account and is redirected to the login page
+4. User logs in and is redirected to the habit list page
+
+---
+
+#### Returning User Journey
+
+1. User visits the application and logs in
+2. Authentication state persists across page refresh
+3. User is taken directly to their habit list
+4. User can create, edit, or delete habits as needed
+5. User logs out, clearing authentication state
+
+---
+
+#### Error and Edge Case Handling
+
+- Invalid login credentials result in clear error messages
+- Form validation errors are displayed inline
+- Unauthorized access attempts are prevented
+- Empty states (e.g. no habits created) are handled gracefully
 
 ## Features
 
